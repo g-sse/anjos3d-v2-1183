@@ -1,0 +1,30 @@
+.admin-partners { margin: 65px 0; padding-top: 30px; border-top: 1px solid #354044; }
+.admin-partners .admin-section-title { gap: 25px; }
+.admin-partners .admin-section-title p { font-size: 13px; color: #a8b4b6; margin-top: 8px; line-height: 1.7; }
+.admin-partners .outline-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.admin-partners .partner-admin-notice { padding: 16px 20px; margin: 20px 0; border: 1px solid #405448; background: #18241e; color: #dce5d6; font-size: 13px; line-height: 1.7; }
+.partner-admin-form { padding: 25px; background: #141c1e; border: 1px solid #354044; margin: 25px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.admin-partners label { display: flex; flex-direction: column; gap: 9px; color: #b3c1c3; font-size: 10px; letter-spacing: .08em; }
+.admin-partners input:not([type="checkbox"]) { width: 100%; background: #0d1416; border: 1px solid #405055; color: #f0eee9; padding: 13px 14px; min-height: 46px; font-size: 14px; letter-spacing: normal; }
+.admin-partners small { color: #95a6a7; font-size: 11px; line-height: 1.6; letter-spacing: normal; }
+.admin-partners .partner-active-check { flex-direction: row; align-items: center; justify-content: start; gap: 12px; }
+.admin-partners input[type="checkbox"] { width: 17px; height: 17px; accent-color: #f37942; }
+.partner-form-actions { grid-column: 1 / -1; display: flex; justify-content: end; gap: 15px; }
+.partner-admin-empty { padding: 30px 0; color: #93a5a7; font-size: 14px; line-height: 1.7; }
+.partner-admin-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; border-bottom: 1px solid #354044; padding: 22px 0; }
+.partner-admin-row > div:first-child { flex: 1; min-width: 180px; }
+.partner-admin-row strong { display: block; font-size: 15px; font-weight: 500; color: #f0eee9; }
+.partner-admin-row > div:first-child span { display: block; font-size: 12px; color: #99adaf; margin-top: 6px; overflow-wrap: anywhere; }
+.partner-row-actions { display: flex; gap: 10px; }
+.partner-reset-form { width: 100%; display: flex; flex-wrap: wrap; align-items: end; gap: 15px; padding: 20px; background: #141c1e; border: 1px solid #354044; }
+.partner-reset-form label { flex: 1; min-width: 180px; }
+.partner-reset-form p { width: 100%; font-size: 12px; color: #a8b4b6; line-height: 1.7; }
+.admin-settings form { flex-wrap: wrap; }
+.admin-settings small, .admin-editor small { display: block; font-size: 11px; line-height: 1.6; color: #92a5a8; letter-spacing: normal; }
+@media (max-width: 640px) {
+  .admin-partners .admin-section-title { flex-wrap: wrap; }
+  .partner-admin-form { grid-template-columns: 1fr; padding: 20px; }
+  .partner-row-actions { width: 100%; flex-wrap: wrap; }
+  .partner-row-actions .outline-button { padding-inline: 12px; font-size: 9px; }
+  .partner-form-actions { flex-wrap: wrap; }
+}

@@ -1,0 +1,105 @@
+/* Logo palette (navy → blue → magenta → coral). Scoped override; remove data-palette="logo" to return to the original sage palette. */
+.public-site[data-palette="logo"] {
+  --paper: #f7f8fb;
+  --ink: #15233b;
+  --muted: #5c6880;
+  --line: #dde2ec;
+  --navy: #12284a;
+  --blue: #2e6ea3;
+  --sky: #5aa0d0;
+  --plum: #8e2a5e;
+  --rose: #c8486f;
+  --coral: #f2928f;
+  --logo-gradient: linear-gradient(90deg, #2e6ea3 0%, #5aa0d0 34%, #c8486f 70%, #f2928f 100%);
+}
+.public-site[data-palette="logo"] ::selection { background: #f2928f; color: #12284a; }
+.public-site[data-palette="logo"] :focus-visible { outline-color: var(--rose); }
+.public-site[data-palette="logo"] em { color: var(--plum); }
+.public-site[data-palette="logo"] .blue { color: var(--blue); }
+.public-site[data-palette="logo"] a:hover { color: var(--rose); }
+
+/* Header */
+.public-site[data-palette="logo"] .site-header { background: var(--paper); }
+.public-site[data-palette="logo"] .brand > span > span { color: var(--rose); }
+.public-site[data-palette="logo"] .site-header .nav-contact { border-color: #c4cddd; }
+.public-site[data-palette="logo"] .button-orange { background: var(--navy); border-color: var(--navy); color: #f7f8fb; }
+.public-site[data-palette="logo"] .button-orange:hover { background: var(--plum); border-color: var(--plum); color: #fff; }
+
+/* Hero — frames carry a baked dark background; lighten blend lets it disappear into the navy. */
+.public-site[data-palette="logo"] .quiet-hero { background: #132848; color: #eef2f9; }
+.public-site[data-palette="logo"] .sequence-scene { background: #132848; isolation: isolate; }
+.public-site[data-palette="logo"] .sequence-image,
+.public-site[data-palette="logo"] .sequence-scene canvas { mix-blend-mode: lighten; filter: hue-rotate(-24deg) saturate(.92); }
+.public-site[data-palette="logo"] .quiet-eyebrow { color: #a9bbd6; }
+.public-site[data-palette="logo"] .quiet-eyebrow > span:last-child { color: #7488a8; }
+.public-site[data-palette="logo"] .signal-dot { background: var(--coral); }
+.public-site[data-palette="logo"] .quiet-hero h1 > span { color: var(--coral); }
+.public-site[data-palette="logo"] .quiet-hero-description { color: #bccadf; }
+.public-site[data-palette="logo"] .quiet-catalog-link { border-color: #4d6a93; }
+.public-site[data-palette="logo"] .quiet-catalog-link:hover { border-color: var(--coral); color: var(--coral); }
+.public-site[data-palette="logo"] .hero-layer-subtitle { color: #d9e3f1; }
+.public-site[data-palette="logo"] .hero-layer-subtitle em { color: var(--coral); }
+.public-site[data-palette="logo"] .sequence-notice { background: #142a4bf0; color: #e6ecf6; }
+.public-site[data-palette="logo"] .sequence-notice button { color: var(--coral); }
+.public-site[data-palette="logo"] .quiet-telemetry { border-top-color: #ffffff1f; }
+.public-site[data-palette="logo"] .quiet-telemetry > span:first-child { color: #a9bbd6; }
+.public-site[data-palette="logo"] .quiet-telemetry strong small { color: var(--coral); }
+.public-site[data-palette="logo"] .quiet-caption,
+.public-site[data-palette="logo"] .quiet-hero-bottom { color: #7f93b2; }
+.public-site[data-palette="logo"] .quiet-hero-bottom > span:nth-child(2) { color: #b9c8de; }
+.public-site[data-palette="logo"] .quiet-progress { background: #ffffff0d; }
+.public-site[data-palette="logo"] .quiet-progress > span { background: var(--logo-gradient); }
+
+/* Intro band */
+.public-site[data-palette="logo"] .intro-band { background: #eef2f8; color: var(--navy); border-color: var(--line); }
+.public-site[data-palette="logo"] .intro-band svg { color: var(--rose); }
+
+/* Process */
+.public-site[data-palette="logo"] .process-visual img { filter: brightness(.88) saturate(.85); }
+.public-site[data-palette="logo"] .process-photo-label svg { color: var(--coral); }
+.public-site[data-palette="logo"] .steps > div { border-top: 2px solid transparent; border-image: var(--logo-gradient) 1; }
+.public-site[data-palette="logo"] .steps > div > span { color: var(--rose); }
+.public-site[data-palette="logo"] .process-closing { color: var(--blue); }
+
+/* Possibilities */
+.public-site[data-palette="logo"] .possibilities { background: #edf1f8; }
+.public-site[data-palette="logo"] .possibility-main > img { filter: saturate(.85); }
+.public-site[data-palette="logo"] .possibility-caption span,
+.public-site[data-palette="logo"] .possibility-note { color: var(--plum); }
+.public-site[data-palette="logo"] .possibility-side { border-left-color: #cdd5e3; }
+.public-site[data-palette="logo"] .possibility-side .text-link { color: var(--navy); }
+
+/* Catalog */
+.public-site[data-palette="logo"] .catalog-closing { color: var(--blue); }
+.public-site[data-palette="logo"] .catalog-filters button.active,
+.public-site[data-palette="logo"] .catalog-filters button:hover { background: var(--navy); border-color: var(--navy); color: #f7f8fb; }
+.public-site[data-palette="logo"] .product-image { background: #ebeff6; }
+.public-site[data-palette="logo"] .product-arrow { background: #fbe6e6; color: var(--plum); }
+.public-site[data-palette="logo"] .product-data p { color: var(--plum); }
+.public-site[data-palette="logo"] .catalog-empty { background: #eef2f8; }
+.public-site[data-palette="logo"] .empty-cross { color: var(--rose); }
+.public-site[data-palette="logo"] .catalog-access { color: var(--blue); }
+.public-site[data-palette="logo"] .catalog-access button { border-color: #c4cddd; color: var(--navy); }
+.public-site[data-palette="logo"] .conditions-toggle { color: var(--navy); }
+.public-site[data-palette="logo"] .inline-product-details { background: #eef2f8; }
+.public-site[data-palette="logo"] .condition-row { border-top-color: #d6ddea; }
+.public-site[data-palette="logo"] .condition-row strong { color: var(--navy); }
+.public-site[data-palette="logo"] .condition-row a { color: var(--plum); }
+.public-site[data-palette="logo"] .partner-invitation { color: var(--blue); }
+.public-site[data-palette="logo"] .modal-close { background: #eef2f8; }
+.public-site[data-palette="logo"] .modal-photo { background: #ebeff6; }
+.public-site[data-palette="logo"] .gallery-controls button,
+.public-site[data-palette="logo"] .gallery-controls span { background: #f7f8fbee; }
+
+/* Contact & footer */
+.public-site[data-palette="logo"] .contact-section { background: linear-gradient(180deg, #f8eef1 0%, #f3eaf0 100%); }
+.public-site[data-palette="logo"] .contact-content h2 > span { color: var(--blue); }
+.public-site[data-palette="logo"] .contact-aside .contact-story { color: var(--plum); }
+.public-site[data-palette="logo"] .footer-bottom { border-color: #e3cfd8; }
+
+/* Partner login */
+.public-site[data-palette="logo"].partner-login-page { background: #f2f5fa; }
+.public-site[data-palette="logo"] .partner-back { color: var(--blue); }
+.public-site[data-palette="logo"] .partner-login-card label { color: var(--navy); }
+.public-site[data-palette="logo"] .partner-login-card input { background: #fbfcfe; border-color: #c4cddd; }
+.public-site[data-palette="logo"] .partner-login-help a { color: var(--plum); }
