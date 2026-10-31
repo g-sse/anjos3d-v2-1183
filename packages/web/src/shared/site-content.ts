@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { imageSource, safeLink } from "./validators";
+import { companySchema, normalizePath, pageSchema, redirectSchema, reservedSlugs, seoSchema } from "./site-extras";
+export { safeLink };
 
 type Field = { group: string; label: string; value: string; kind?: "text" | "paragraph" | "link" | "image" };
 export const contentFields = {
@@ -122,26 +125,74 @@ export const contentFields = {
 
 export type ContentKey = keyof typeof contentFields;
 export const contentKeys = Object.keys(contentFields) as ContentKey[];
-export const safeLink = z.string().max(2048).refine(value => /^(#[\w-]+|\/(?!\/)[\w\-/#?=&.%]*|https:\/\/[^\s]+|mailto:[^\s]+|tel:\+?[\d -]+)$/.test(value), "Use um caminho do site, âncora, https://, mailto: ou tel: válido.");
-const shape = Object.fromEntries(contentKeys.map(key => [key, (contentFields[key] as Field).kind === "link" ? safeLink : (contentFields[key] as Field).kind === "image" ? z.string().regex(/^\/images\/[\w./-]+$|^\/api\/media\/[\w.-]+$/, "Use um arquivo de imagem do site.") : z.string().max(4000)])) as Record<ContentKey, z.ZodString | typeof safeLink>;
+const shape = Object.fromEntries(contentKeys.map(key => [key, (contentFields[key] as Field).kind === "link" ? safeLink : (contentFields[key] as Field).kind === "image" ? imageSource : z.string().max(4000)])) as Record<ContentKey, z.ZodString | typeof safeLink>;
 const sectionId = z.enum(["intro", "processo", "possibilidades", "catalogo"]);
 export const sectionLabels = { intro: "Faixa editorial", processo: "Processo", possibilidades: "Possibilidades", catalogo: "Catálogo" };
 export const siteDocumentSchema = z.object({
   texts: z.object(shape).strict(),
   sections: z.array(z.object({ id: sectionId, enabled: z.boolean() }).strict()).length(4).refine(rows => new Set(rows.map(row => row.id)).size === 4, "As quatro seções devem aparecer uma vez."),
   whatsapp: z.string().regex(/^\d{12,15}$|^$/, "Use país e DDD, apenas números (12 a 15 dígitos)."),
-}).strict();
+  // Added in phase 2: older stored versions lack these keys and parse with defaults.
+  pages: z.array(pageSchema).max(30).default([]),
+  seo: seoSchema.prefault({}),
+  company: companySchema.prefault({}),
+  redirects: z.array(redirectSchema).max(50).default([]),
+}).strict().superRefine((doc, ctx) => {
+  const slugs = new Set<string>();
+  doc.pages.forEach((page, i) => {
+    if (slugs.has(page.slug)) ctx.addIssue({ code: "custom", path: ["pages", i, "slug"], message: `O endereço /${page.slug} está repetido em outra página.` });
+    slugs.add(page.slug);
+  });
+  if (new Set(doc.pages.map(page => page.id)).size !== doc.pages.length) ctx.addIssue({ code: "custom", path: ["pages"], message: "Identificadores de página repetidos." });
+  const froms = new Set<string>();
+  doc.redirects.forEach((rule, i) => {
+    const from = normalizePath(rule.from);
+    const first = from.split("/")[1] ?? "";
+    if (from === "/" || reservedSlugs.includes(first)) ctx.addIssue({ code: "custom", path: ["redirects", i, "from"], message: `O endereço ${rule.from} é usado pelo site e não pode ser redirecionado.` });
+    if (slugs.has(from.slice(1))) ctx.addIssue({ code: "custom", path: ["redirects", i, "from"], message: `${rule.from} já é uma página. Remova o redirecionamento ou mude o endereço da página.` });
+    if (froms.has(from)) ctx.addIssue({ code: "custom", path: ["redirects", i, "from"], message: `Redirecionamento repetido para ${rule.from}.` });
+    if (normalizePath(rule.to.split("#")[0] || "/") === from) ctx.addIssue({ code: "custom", path: ["redirects", i, "to"], message: `${rule.from} redireciona para ele mesmo.` });
+    froms.add(from);
+  });
+});
+/** Internal link target problem for a published document, or null when the link is fine. */
+export function internalLinkProblem(doc: SiteDocument, href: string) {
+  const target = href.replace(/^\/#/, "#");
+  if (target.startsWith("#")) return doc.sections.some(row => `#${row.id}` === target && !row.enabled) ? "aponta para uma seção oculta" : null;
+  if (!href.startsWith("/")) return null;
+  const path = normalizePath(href.split(/[?#]/)[0] ?? "/");
+  if (path === "/" || path === "/entrar") return null;
+  const slug = path.slice(1);
+  const page = doc.pages.find(row => row.slug === slug);
+  if (page) return page.visible ? null : `aponta para a página oculta /${slug}`;
+  if (doc.redirects.some(rule => normalizePath(rule.from) === path)) return null;
+  return `aponta para ${path}, que não existe no site`;
+}
 export const publishDocumentSchema = siteDocumentSchema.superRefine((doc, ctx) => {
   for (const key of ["heroLink", "possibilitiesLink"] as const) {
-    const target = doc.texts[key].replace(/^\/#/, "#");
-    if (target.startsWith("#") && doc.sections.some(row => `#${row.id}` === target && !row.enabled)) ctx.addIssue({ code: "custom", path: ["texts", key], message: "O botão aponta para uma seção oculta. Troque o destino antes de publicar." });
+    const problem = internalLinkProblem(doc, doc.texts[key]);
+    if (problem) ctx.addIssue({ code: "custom", path: ["texts", key], message: `O botão "${contentFields[key].label}" ${problem}. Troque o destino antes de publicar.` });
   }
+  doc.pages.forEach((page, i) => page.blocks.forEach((block, j) => {
+    if (block.type !== "cta") return;
+    const problem = internalLinkProblem(doc, block.href);
+    if (problem) ctx.addIssue({ code: "custom", path: ["pages", i, "blocks", j, "href"], message: `Página "${page.title}": a chamada para ação ${problem}.` });
+  }));
+  doc.redirects.forEach((rule, i) => {
+    const problem = internalLinkProblem(doc, rule.to);
+    if (problem) ctx.addIssue({ code: "custom", path: ["redirects", i, "to"], message: `Redirecionamento ${rule.from}: o destino ${problem}.` });
+  });
+  doc.pages.forEach((page, i) => { if (page.visible && page.inMenu && !page.menuLabel.trim() && !page.title.trim()) ctx.addIssue({ code: "custom", path: ["pages", i, "menuLabel"], message: "Informe o nome no menu." }); });
 });
 export type SiteDocument = z.infer<typeof siteDocumentSchema>;
 export const defaultDocument: SiteDocument = {
   texts: Object.fromEntries(contentKeys.map(key => [key, contentFields[key].value])) as Record<ContentKey, string>,
   sections: [{ id: "intro", enabled: true }, { id: "processo", enabled: true }, { id: "possibilidades", enabled: true }, { id: "catalogo", enabled: true }],
   whatsapp: "",
+  pages: [],
+  seo: seoSchema.parse({}),
+  company: companySchema.parse({}),
+  redirects: [],
 };
 export function fillText(text: string, values: Record<string, string | number>) {
   return text.replace(/\{(\w+)\}/g, (match, key: string) => key in values ? String(values[key]) : match);

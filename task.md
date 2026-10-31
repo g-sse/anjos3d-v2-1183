@@ -3,7 +3,8 @@
 ## Interjection — logo color palette for public homepage (2026-10-27)
 - [x] User approved CMS checkpoint 1; before media/pages/SEO, asked for a color-only version of the homepage matching the logo.
 - [x] Scoped override `public-palette-logo.css`, default on; `?paleta=original` compares. Lint/build pass; qa-redesign all pass; desktop/mobile screenshots in /home/user/anjos3d-palette/.
-- [ ] Await palette review, then resume CMS phase 2 (media, pages, SEO) — nothing of phase 2 implemented yet.
+- [x] User approved logo palette; asked for header icon toggling logo/original on each click. Implemented (`usePublicPalette`, localStorage), QA `/home/user/qa-palette-toggle.py` passed desktop/mobile (toggle, persistence on reload, mobile menu, login follows, no overflow/errors); qa-redesign passed; lint/build pass.
+- [ ] Resume CMS phase 2 (media, pages, SEO).
 
 ## Current task — CMS/SEO extension (plan approved)
 

@@ -11,6 +11,7 @@ import { usePublicPalette } from "../hooks/use-public-palette";
 export default function PartnerLogin() {
   const access = useAccess();
   const qc = useQueryClient();
+  const { palette } = usePublicPalette();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

@@ -35,7 +35,8 @@ Keep the approved public layout and scroll-driven print sequence. Expand `/admin
 
 User addition: optional light mode for all administrative screens, including login, CMS, product editor and partners. Keep dark as the default and offer a labeled sun/moon toggle; remember preference in localStorage for this browser. Scope theme tokens to `.admin-surface`, never apply a global public theme. Dark background #0b0e10/panel #151c1e; light background #f7f6f2/panel #fffefa; clear contrast for fields, muted labels, statuses and disabled actions. Changing theme must not discard edits.
 
-## Public palette proposal — logo colors (2026-10-27, awaiting user review)
+## Public palettes — logo (default, approved) + original, visitor switch
 - Active by default on homepage, draft preview and partner login via `data-palette="logo"` (`src/web/public-palette-logo.css`). `?paleta=original` shows the previous sage palette for comparison. Layout, type, spacing and animation unchanged — color only.
 - Tokens: paper #f7f8fb, ink #15233b, muted #5c6880, line #dde2ec, navy #12284a (hero/buttons), blue #2e6ea3, sky #5aa0d0, plum #8e2a5e (highlight words/prices), rose #c8486f, coral #f2928f (hero accents). Gradient blue→coral on step rules and hero progress.
 - Hero is solid #132848; baked-background frames use `mix-blend-mode: lighten` + `hue-rotate(-24deg)` so frame background disappears and orange print accents read as coral. Section tints: ice #eef2f8/#edf1f8, contact blush #f8eef1.
+- Header switch `.palette-toggle` (palette icon + split swatch of the palette it switches TO), always visible incl. mobile next to the menu button. Hook `src/web/hooks/use-public-palette.ts`, localStorage `anjos3d.public.palette`, synced across tabs; `?paleta=original|logo` still overrides on load. Partner login follows the saved choice. Admin unaffected.

@@ -247,4 +247,11 @@
   .public-site .quiet-hero h1 { font-size: 34px; margin-top: 12px; }
   .public-site .hero-layer-subtitle { margin-top: 14px; font-size: 16px; }
   .public-site .sequence-scene { max-height: 23svh; }
-}
+}/* Header end group + palette switch (both palettes) */
+.public-site .header-end { display: flex; align-items: center; gap: 14px; }
+.public-site .palette-toggle { display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; transition: border-color .2s ease; }
+.public-site .palette-toggle:hover { border-color: var(--muted); }
+.public-site .palette-swatch { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1px #00000014; }
+.public-site .palette-toggle[data-next="original"] .palette-swatch { background: linear-gradient(90deg, #4d5b48 50%, #b0ba95 50%); }
+.public-site .palette-toggle[data-next="logo"] .palette-swatch { background: linear-gradient(90deg, #2e6ea3 50%, #f2928f 50%); }
+@media (max-width: 640px) { .public-site .header-end { gap: 10px; } .public-site .palette-toggle { height: 34px; padding: 0 8px; } }
